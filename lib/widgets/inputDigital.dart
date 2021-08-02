@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-Widget inputText(TextEditingController textEditingController,String label,bool visibility){
+Widget inputDigital(TextEditingController textEditingController,String hinText,String label,MaskTextInputFormatter maskTextInputFormatter){
   return TextFormField(
     controller: textEditingController,
-    obscureText: visibility,
     textCapitalization: TextCapitalization.words,
-    keyboardType: TextInputType.text,
+    keyboardType: TextInputType.numberWithOptions(decimal: true),
+    inputFormatters: [
+      maskTextInputFormatter,
+    ],
     decoration: InputDecoration(
+      hintText: hinText,
+      hintStyle: TextStyle(fontSize: 12),
       labelText: label,
-
     ),
     validator: (value){
-      print(value);
       if(value==null || value.isEmpty){
         return "Bu alan boş bırakılmaz";
       }
