@@ -23,48 +23,99 @@ class ChoicesMadeState extends State<ChoicesMade> {
     Colors.yellow,
     Colors.red,
   ];
-   List<String> item=["A","B","C","D","E","F"];
+   List<String> item=["A","B","C","D","E","F","H","I","J","K"];
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
-          child: PieChart(
-            dataMap: dataMap,
-            animationDuration: Duration(milliseconds: 800),
-            chartLegendSpacing: 32,
-            chartRadius: MediaQuery.of(context).size.width / 3.2,
-            colorList: colorList,
-            initialAngleInDegree: 0,
-            chartType: ChartType.disc,
-            ringStrokeWidth: 32,
-            centerText: "",
-            legendOptions: LegendOptions(
-              showLegendsInRow: false,
-              legendPosition: LegendPosition.right,
-              showLegends: true,
-              //legendShape: ,
-              legendTextStyle: TextStyle(
-                fontWeight: FontWeight.bold,
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          PieChart(
+                dataMap: dataMap,
+                animationDuration: Duration(milliseconds: 800),
+                chartLegendSpacing: 32,
+                chartRadius: MediaQuery.of(context).size.width / 3.2,
+                colorList: colorList,
+                initialAngleInDegree: 0,
+                chartType: ChartType.disc,
+                ringStrokeWidth: 32,
+                centerText: "",
+                legendOptions: LegendOptions(
+                  showLegendsInRow: false,
+                  legendPosition: LegendPosition.right,
+                  showLegends: true,
+                  //legendShape: ,
+                  legendTextStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                chartValuesOptions: ChartValuesOptions(
+                  showChartValueBackground: true,
+                  showChartValues: true,
+                  showChartValuesInPercentage: true,
+                  showChartValuesOutside: false,
+                  decimalPlaces: 1,
+                ),
               ),
-            ),
-            chartValuesOptions: ChartValuesOptions(
-              showChartValueBackground: true,
-              showChartValues: true,
-              showChartValuesInPercentage: true,
-              showChartValuesOutside: false,
-              decimalPlaces: 1,
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
-          child:Text("sdf"),
-        ),
+          Expanded(
+            child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: item.length,
+                  itemBuilder: (BuildContext context,int position){
+                   return Dismissible(
+                     key: Key(item[position]),
+                     onDismissed:(direction) async{
+                       print("silindi");
+                     },
+                     secondaryBackground:Container(
+                       child: Center(
+                         child: Text("Sil",style: TextStyle(fontWeight: FontWeight.bold,color:Colors.white),),
+                       ),
+                       color: Colors.red,
+                     ),
+                     background: Container(),
+                     child: Card(
+                       color: Colors.white,
+                       elevation: 2.0,
+                       child: ListTile(
+                         leading: CircleAvatar(
+                           //backgroundColor: _appointedWorkplaceList[position].type=="Alan Dışı"?Colors.red:Colors.blue,
+                           child: Text("9,2"),
+                         ),
+                         title: Text(item[position]),
+                         subtitle: Text(item[position]),
+                         onTap: (){
+                           print("Seçildi");
+                           // showToNotification(context,_appointedWorkplaceList[position]);
+                         },
+                       ),
+                     ),
+                   );
 
-      ]);
+                  // return Card(
+                  //   color: Colors.white,
+                  //   elevation: 2.0,
+                  //   child: ListTile(
+                  //     leading: CircleAvatar(
+                  //       //backgroundColor: _appointedWorkplaceList[position].type=="Alan Dışı"?Colors.red:Colors.blue,
+                  //       child: Text("A"),
+                  //     ),
+                  //     title: Text(item[position]),
+                  //     subtitle: Text(item[position]),
+                  //     onTap: (){
+                  //       print("Seçildi");
+                  //      // showToNotification(context,_appointedWorkplaceList[position]);
+                  //     },
+                  //   ),
+                  // );
+                },
+              ),
+          ),
+        ],
+      ),
+    );
   }
 }

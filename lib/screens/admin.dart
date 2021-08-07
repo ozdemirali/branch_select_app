@@ -38,7 +38,7 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Admin"),
+        title: Text("Admin",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.normal)),
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
@@ -46,7 +46,15 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
         ),
         actions: [
           TextButton(
-              style:TextButton.styleFrom(textStyle: TextStyle(fontSize: 20)) ,
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),
+                primary: Colors.white
+              ),
+              // style: TextButton.styleFrom(
+              //   //padding: const EdgeInsets.all(16.0),
+              //   primary: Colors.white,
+              //   textStyle: const TextStyle(fontSize: 20),
+              // ),
               onPressed: (){print("Çıkış");},
               child: Text("Çıkış"))
         ],
