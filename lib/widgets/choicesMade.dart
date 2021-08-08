@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:branch_select_app/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
@@ -33,33 +33,34 @@ class ChoicesMadeState extends State<ChoicesMade> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PieChart(
-                dataMap: dataMap,
-                animationDuration: Duration(milliseconds: 800),
-                chartLegendSpacing: 32,
-                chartRadius: MediaQuery.of(context).size.width / 3.2,
-                colorList: colorList,
-                initialAngleInDegree: 0,
-                chartType: ChartType.disc,
-                ringStrokeWidth: 32,
-                centerText: "",
-                legendOptions: LegendOptions(
-                  showLegendsInRow: false,
-                  legendPosition: LegendPosition.right,
-                  showLegends: true,
-                  //legendShape: ,
-                  legendTextStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                chartValuesOptions: ChartValuesOptions(
-                  showChartValueBackground: true,
-                  showChartValues: true,
-                  showChartValuesInPercentage: true,
-                  showChartValuesOutside: false,
-                  decimalPlaces: 1,
-                ),
-              ),
+          // PieChart(
+          //       dataMap: dataMap,
+          //       animationDuration: Duration(milliseconds: 800),
+          //       chartLegendSpacing: 32,
+          //       chartRadius: MediaQuery.of(context).size.width / 3.2,
+          //       colorList: colorList,
+          //       initialAngleInDegree: 0,
+          //       chartType: ChartType.disc,
+          //       ringStrokeWidth: 32,
+          //       centerText: "",
+          //       legendOptions: LegendOptions(
+          //         showLegendsInRow: false,
+          //         legendPosition: LegendPosition.right,
+          //         showLegends: true,
+          //         //legendShape: ,
+          //         legendTextStyle: TextStyle(
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       chartValuesOptions: ChartValuesOptions(
+          //         showChartValueBackground: false,
+          //         showChartValues: true,
+          //         showChartValuesInPercentage: true,
+          //         showChartValuesOutside: false,
+          //         decimalPlaces: 1,
+          //       ),
+          //     ),
+          chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.right,false,true,true,false),
           Expanded(
             child: ListView.builder(
                   shrinkWrap: true,
@@ -94,23 +95,6 @@ class ChoicesMadeState extends State<ChoicesMade> {
                        ),
                      ),
                    );
-
-                  // return Card(
-                  //   color: Colors.white,
-                  //   elevation: 2.0,
-                  //   child: ListTile(
-                  //     leading: CircleAvatar(
-                  //       //backgroundColor: _appointedWorkplaceList[position].type=="Alan Dışı"?Colors.red:Colors.blue,
-                  //       child: Text("A"),
-                  //     ),
-                  //     title: Text(item[position]),
-                  //     subtitle: Text(item[position]),
-                  //     onTap: (){
-                  //       print("Seçildi");
-                  //      // showToNotification(context,_appointedWorkplaceList[position]);
-                  //     },
-                  //   ),
-                  // );
                 },
               ),
           ),

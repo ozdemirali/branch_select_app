@@ -1,3 +1,4 @@
+import 'package:branch_select_app/widgets/branchStatus.dart';
 import 'package:branch_select_app/widgets/choicesMade.dart';
 import 'package:flutter/material.dart';
 
@@ -63,7 +64,7 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
         controller: _tabController,
         children: [
           ChoicesMade(),
-          Text("Anlık Dal Sayıları"),
+          BranchStatus(),
           Text("Okul Bİligileri"),
           Text("Öğrenci Bilgileri Yükle"),
         ],
