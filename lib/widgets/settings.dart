@@ -1,4 +1,5 @@
 import 'package:branch_select_app/widgets/inputText.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget{
@@ -21,23 +22,30 @@ class SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
-      padding: EdgeInsets.all(2.0),
-      child: Form(
-        key: formKey,
-        child: ListView(
-          children: [
-            inputText(txtSchoolName, "Okul Adı", false, TextInputType.text),
-            inputText(txtBranchTeacher, "Alan Öğretmeni", false, TextInputType.text),
-            inputText(txtAssistantDirector, "Müdür Yardımcısı", false, TextInputType.text),
-            inputText(txtFirstBranchName, "1. Dal İsmi", false, TextInputType.text),
-            inputText(txtSecondBranchName, "2. Dal İsmi", false, TextInputType.text),
-            inputText(txtMinClassCount, "Minimum Öğrenci Sayısı", false, TextInputType.number),
-            saveButton()
-          ],
+    print(MediaQuery.of(context).size.height);
+    return Stack(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height,
+          child:
+            Form(
+            key: formKey,
+            child: ListView(
+              children: [
+                inputText(txtSchoolName, "Okul Adı", false, TextInputType.text),
+                inputText(txtBranchTeacher, "Alan Öğretmeni", false, TextInputType.text),
+                inputText(txtAssistantDirector, "Müdür Yardımcısı", false, TextInputType.text),
+                inputText(txtFirstBranchName, "1. Dal İsmi", false, TextInputType.text),
+                inputText(txtSecondBranchName, "2. Dal İsmi", false, TextInputType.text),
+                inputText(txtMinClassCount, "Minimum Öğrenci Sayısı", false, TextInputType.number),
+                saveButton()
+              ],
+            ),
+          )
         ),
-      )
+      ],
     );
+
   }
 
   Widget saveButton(){
