@@ -1,5 +1,6 @@
 import 'package:branch_select_app/widgets/branchStatus.dart';
 import 'package:branch_select_app/widgets/choicesMade.dart';
+import 'package:branch_select_app/widgets/settings.dart';
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget{
@@ -65,7 +66,7 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
         children: [
           ChoicesMade(),
           BranchStatus(),
-          Text("Okul Bİligileri"),
+          Settings(),
           Text("Öğrenci Bilgileri Yükle"),
         ],
       ),

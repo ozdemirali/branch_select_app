@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
-Widget inputText(TextEditingController textEditingController,String label,bool visibility, TextInputType type){
+Widget inputText(TextEditingController textEditingController,String label,bool visibility, TextInputType textInputType){
   return TextFormField(
     controller: textEditingController,
     obscureText: visibility,
     textCapitalization: TextCapitalization.words,
-    keyboardType: type,
+    keyboardType: textInputType,
     decoration: InputDecoration(
       labelText: label,
     ),
