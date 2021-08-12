@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:branch_select_app/widgets/inputText.dart';
 import 'package:branch_select_app/widgets/logo.dart';
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
+import 'dart:io';
 
 ///This class is for login screen
 ///There are Form that two form element and Submit Button
@@ -73,13 +78,59 @@ class LoginState  extends State<Login>{
       child: ElevatedButton(
         style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
         child: Text("Giriş"),
-        onPressed: (){
-          if(_formKey.currentState!.validate()){
-            print("Giriş");
+        onPressed: () {
+          //getToken();
+          getAccessToken();
+            if(_formKey.currentState!.validate()){
+              ///print("Giriş");
+            }
           }
-        },
       ),
     );
   }
+
+  getToken() async{
+    var url = Uri.parse('https://192.168.1.88:45456/token');
+    print(url);
+    var response = await http.post(url, body: {'userName': "Admin", 'password': "123456"})
+        .then((value) {
+          print(value.statusCode);
+          print(value.body);
+    }).catchError((e){
+      print(e.toString());
+    });
+    // var response=await http
+    //     .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+
+    //print('Response status: ${response.statusCode}');
+    //print('Response body: ${response.body}');
+  }
+
+
+  Future getAccessToken() async {
+    try {
+      var url = Uri.parse('https://192.168.1.88:45456/token');
+      print(url);
+      final ioc = new HttpClient();
+      ioc.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      final http = new IOClient(ioc);
+      http.post(url, body: {"userName": "Admin", "password": "123456","grant_type":"password"}).then(
+              (response) {
+            print("Reponse status : ${response.statusCode}");
+            print("Response body : ${response.body}");
+            var myresponse = jsonDecode(response.body);
+            String token = myresponse["token"];
+          }).catchError((onError){
+            print("Hata---");
+            print(onError);
+      });
+    } catch (e) {
+      print("Hata");
+      print(e.toString());
+    }
+  }
+
+
 
 }
