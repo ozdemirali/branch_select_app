@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:branch_select_app/models/token.dart';
+import 'package:branch_select_app/services/auth.dart';
 import 'package:branch_select_app/widgets/inputText.dart';
 import 'package:branch_select_app/widgets/logo.dart';
+import 'package:branch_select_app/screens/root.dart' as root;
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -12,9 +15,14 @@ import 'dart:io';
 ///There are Form that two form element and Submit Button
 ///And there is submit method to connect home screen
 class Login extends StatefulWidget{
+  Login({required this.auth,required this.loginCallback});
+
+  final BaseAuth auth;
+  final VoidCallback loginCallback;
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
+
+
     return LoginState();
   }
 }
@@ -23,6 +31,7 @@ class LoginState  extends State<Login>{
   TextEditingController txtUserName=new TextEditingController();
   TextEditingController txtPassword=new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -32,7 +41,7 @@ class LoginState  extends State<Login>{
       ),
       body: Stack(
         children: [
-         showForm()
+        showForm()
         ],
 
       ),
@@ -78,11 +87,21 @@ class LoginState  extends State<Login>{
       child: ElevatedButton(
         style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
         child: Text("Giriş"),
-        onPressed: () {
-          //getToken();
-          getAccessToken();
+        onPressed: () async {
             if(_formKey.currentState!.validate()){
-              ///print("Giriş");
+              String token;
+              widget.auth.getToken(txtUserName.text, txtPassword.text);
+              await Future.delayed(Duration(seconds: 1));
+
+              if(Token.accessToken!=""){
+                //print("ttt");
+                print("--->>> "+Token.accessToken);
+                widget.loginCallback();
+              }
+
+              //print(token);
+              //widget.loginCallback();
+
             }
           }
       ),
@@ -90,7 +109,7 @@ class LoginState  extends State<Login>{
   }
 
   getToken() async{
-    var url = Uri.parse('https://192.168.1.88:45456/token');
+    var url = Uri.parse('https://192.168.1.88:45455/token');
     print(url);
     var response = await http.post(url, body: {'userName': "Admin", 'password': "123456"})
         .then((value) {
@@ -109,7 +128,7 @@ class LoginState  extends State<Login>{
 
   Future getAccessToken() async {
     try {
-      var url = Uri.parse('https://192.168.1.88:45456/token');
+      var url = Uri.parse('https://192.168.1.88:45455/token');
       print(url);
       final ioc = new HttpClient();
       ioc.badCertificateCallback =

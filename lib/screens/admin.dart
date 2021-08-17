@@ -1,9 +1,13 @@
+import 'package:branch_select_app/services/auth.dart';
 import 'package:branch_select_app/widgets/branchStatus.dart';
 import 'package:branch_select_app/widgets/choicesMade.dart';
 import 'package:branch_select_app/widgets/settings.dart';
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget{
+  Admin({required this.auth,required this.logoutCallback});
+  final BaseAuth auth;
+  final VoidCallback logoutCallback;
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -57,7 +61,7 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
               //   primary: Colors.white,
               //   textStyle: const TextStyle(fontSize: 20),
               // ),
-              onPressed: (){print("Çıkış");},
+              onPressed: (){print("Çıkış");widget.logoutCallback();},
               child: Text("Çıkış"))
         ],
       ),
