@@ -3,9 +3,13 @@ import 'package:branch_select_app/widgets/inputDigital.dart';
 import 'package:branch_select_app/widgets/inputText.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Home extends StatefulWidget{
+ Home({required this.logoutCallback});
+  final VoidCallback logoutCallback;
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -57,21 +61,35 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
             inputText(txtAddress, "Sınıf ve Şubesi ", false,TextInputType.text),
             inputDigital(txtPhone, "0 (999) 999 99 99", "Öğrencinin Telefonu", maskPhone),
             inputText(txtEmail, "Email", false,TextInputType.emailAddress),
-            showLoginButton(),
-            // TextFormField(
-            //   decoration: InputDecoration(labelText: 'Email'),
-            //   validator: (val) => !EmailValidator.Validate(val,true)
-            //       ? 'Not a valid email.'
-            //       : null,
-            //   onSaved: (val) => print(val),
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment:CrossAxisAlignment.start,
+              children: [
+                showLogoutButton(),
+                showSaveButton()
+              ],
+            ),
+            //showSaveButton(),
           ],
         ),
       ),
     );
   }
 
-  Widget showLoginButton(){
+  Widget showLogoutButton(){
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+      child: ElevatedButton(
+        style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+        child: Text("Çıkış"),
+        onPressed: (){
+          widget.logoutCallback();
+        },
+      ),
+    );
+  }
+
+  Widget showSaveButton(){
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
       child: ElevatedButton(

@@ -1,15 +1,8 @@
-import 'dart:convert';
-
 import 'package:branch_select_app/models/token.dart';
 import 'package:branch_select_app/services/auth.dart';
 import 'package:branch_select_app/widgets/inputText.dart';
 import 'package:branch_select_app/widgets/logo.dart';
-import 'package:branch_select_app/screens/root.dart' as root;
 import 'package:flutter/material.dart';
-
-import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
-import 'dart:io';
 
 ///This class is for login screen
 ///There are Form that two form element and Submit Button
@@ -19,10 +12,9 @@ class Login extends StatefulWidget{
 
   final BaseAuth auth;
   final VoidCallback loginCallback;
+
   @override
   State<StatefulWidget> createState() {
-
-
     return LoginState();
   }
 }
@@ -31,6 +23,8 @@ class LoginState  extends State<Login>{
   TextEditingController txtUserName=new TextEditingController();
   TextEditingController txtPassword=new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late bool isLoading=false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +35,23 @@ class LoginState  extends State<Login>{
       ),
       body: Stack(
         children: [
-        showForm()
+        showForm(),
+        showCircularProgress()
         ],
 
       ),
+    );
+  }
+
+  Widget showCircularProgress(){
+    if(isLoading){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return Container(
+      height: 0.0,
+      width: 0.0,
     );
   }
 
@@ -60,6 +67,7 @@ class LoginState  extends State<Login>{
             logo("Dal Seçim Logosu",60,0,50,0,0,"logo.png"),
             showEmailInput(),
             showPasswordInput(),
+            showErrorMessage(),
             showLoginButton(),
           ],
         ),
@@ -87,69 +95,57 @@ class LoginState  extends State<Login>{
       child: ElevatedButton(
         style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
         child: Text("Giriş"),
-        onPressed: () async {
+        onPressed: () {
             if(_formKey.currentState!.validate()){
-              String token;
-              widget.auth.getToken(txtUserName.text, txtPassword.text);
-              await Future.delayed(Duration(seconds: 1));
-
-              if(Token.accessToken!=""){
-                //print("ttt");
-                print("--->>> "+Token.accessToken);
-                widget.loginCallback();
-              }
-
-              //print(token);
-              //widget.loginCallback();
-
+              submit();
             }
           }
       ),
     );
   }
 
-  getToken() async{
-    var url = Uri.parse('https://192.168.1.88:45455/token');
-    print(url);
-    var response = await http.post(url, body: {'userName': "Admin", 'password': "123456"})
-        .then((value) {
-          print(value.statusCode);
-          print(value.body);
-    }).catchError((e){
-      print(e.toString());
-    });
-    // var response=await http
-    //     .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
-
-    //print('Response status: ${response.statusCode}');
-    //print('Response body: ${response.body}');
-  }
-
-
-  Future getAccessToken() async {
-    try {
-      var url = Uri.parse('https://192.168.1.88:45455/token');
-      print(url);
-      final ioc = new HttpClient();
-      ioc.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      final http = new IOClient(ioc);
-      http.post(url, body: {"userName": "Admin", "password": "123456","grant_type":"password"}).then(
-              (response) {
-            print("Reponse status : ${response.statusCode}");
-            print("Response body : ${response.body}");
-            var myresponse = jsonDecode(response.body);
-            String token = myresponse["token"];
-          }).catchError((onError){
-            print("Hata---");
-            print(onError);
-      });
-    } catch (e) {
-      print("Hata");
-      print(e.toString());
+  Widget showErrorMessage(){
+    if(Token.error.length>0 && Token.error!=null){
+      return new Padding(
+        padding:const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+        child: new Text(
+          Token.error,
+          style: TextStyle(
+              fontSize: 14.0,
+              color: Colors.grey,
+              height: 1.0,
+              fontWeight: FontWeight.bold),
+        ),
+      );
+    }else{
+      return new Container(
+        height: 0.0,
+      );
     }
   }
 
+  submit() async{
+    setState(() {
+      isLoading=true;
+      //print(isLoading);
+    });
+    try{
+      widget.auth.getToken(txtUserName.text, txtPassword.text);
+      await Future.delayed(Duration(seconds: 1));
 
-
+      setState(() {
+        isLoading=false;
+      });
+      if(Token.accessToken!=""){
+        //print("ttt");
+        //print("--->>> "+Token.accessToken);
+        widget.loginCallback();
+      }
+    }catch(error){
+      setState(() {
+        isLoading = false;
+        //errorMessage=error.toString();
+      });
+    }
+  }
 }

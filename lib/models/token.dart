@@ -1,4 +1,5 @@
 class Token{
   static String accessToken="";
-  static bool admin=false;
+  static String userName="";
+  static String error="";
 }

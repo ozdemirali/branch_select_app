@@ -1,3 +1,4 @@
+import 'package:branch_select_app/models/token.dart';
 import 'package:branch_select_app/services/auth.dart';
 import 'package:branch_select_app/widgets/branchStatus.dart';
 import 'package:branch_select_app/widgets/choicesMade.dart';
@@ -44,7 +45,7 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Admin",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.normal)),
+        title: Text(Token.userName,style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.normal)),
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,

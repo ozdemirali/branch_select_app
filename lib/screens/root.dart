@@ -26,33 +26,33 @@ class Root extends StatefulWidget{
 
 class RootState extends State<Root> {
   AuthStatus authStatus=AuthStatus.Not_Logged_In;
-  String token="";
+
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     authStatus=token==""?AuthStatus.Not_Logged_In:AuthStatus.Logged_In;
-     print(Token.accessToken);
+     authStatus=Token.accessToken==""?AuthStatus.Not_Logged_In:AuthStatus.Logged_In;
+     //print("iniint State -->"+Token.accessToken);
   }
 
   void loginCallback(){
 
       setState(() {
         authStatus=AuthStatus.Logged_In;
-        print("loginCallBack");
-        print(Token.accessToken);
+        //print("loginCallBack");
+        //print("token --> login"+Token.accessToken);
       });
   }
 
   void logoutCallBack(){
     setState(() {
       authStatus=AuthStatus.Not_Logged_In;
+      //print("Logout");
+      Token.accessToken="";
+      //print("token -->"+Token.accessToken);
 
-      token="";
-      print(Token.accessToken);
-      print("Logout");
     });
   }
 
@@ -66,13 +66,15 @@ class RootState extends State<Root> {
         );
         break;
       case AuthStatus.Logged_In:
-        if(true){
+        if(Token.userName.toLowerCase()=="admin"){
           return Admin(
             auth: widget.auth,
             logoutCallback: logoutCallBack,
           );
         }
-        return Home();
+        return Home(
+          logoutCallback: logoutCallBack,
+        );
         break;
       default:
         return Login(
