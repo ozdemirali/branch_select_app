@@ -132,7 +132,6 @@ class LoginState  extends State<Login>{
     try{
       widget.auth.getToken(txtUserName.text, txtPassword.text);
       await Future.delayed(Duration(seconds: 1));
-
       setState(() {
         isLoading=false;
       });

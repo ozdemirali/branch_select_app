@@ -13,13 +13,12 @@ abstract class BaseAuth{
 
 class Auth implements BaseAuth{
 
-
   //This method has to parameter(userName and password)
   //and certificate is used to get data from https web api
   Future getToken(String userName,String password) async {
     try {
       Token.error="";
-      var url = Uri.parse(UrlAddress().https);
+      var url = Uri.parse(UrlAddress().token);
       final ioc = new HttpClient();
       ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       final http = new IOClient(ioc);

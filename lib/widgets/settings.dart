@@ -26,6 +26,7 @@ class SettingsState extends State<Settings> {
     return Stack(
       children: [
         Container(
+          margin: EdgeInsets.all(2.0),
           height: MediaQuery.of(context).size.height,
           child:
             Form(
