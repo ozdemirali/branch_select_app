@@ -31,6 +31,29 @@ class StudentController{
        }
       }
 
+      Future postStudent(Student student) async{
+          try{
+            var url = Uri.parse(UrlAddress().postStudent);
+            final ioc = new HttpClient();
+            ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+            final http = new IOClient(ioc);
+            //print(student.toJson());
+            print(Token.accessToken);
+            print(jsonEncode(student.toJson()));
+
+            final response= await http.post(url,headers:{
+              HttpHeaders.authorizationHeader:"Bearer "+Token.accessToken,
+              HttpHeaders.contentTypeHeader:"application/json"
+           },body:jsonEncode(student.toJson()) );
+
+            print(response.statusCode);
+            print(response.body);
+
+          }catch(error){
+
+          }
+      }
+
   // Future getByIdd(String id) async{
   //   try {
   //     print(id);

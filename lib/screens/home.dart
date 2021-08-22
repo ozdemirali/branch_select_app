@@ -1,3 +1,4 @@
+import 'package:branch_select_app/dialog/showToAlert.dart';
 import 'package:branch_select_app/models/student.dart';
 import 'package:branch_select_app/models/token.dart';
 import 'package:branch_select_app/services/branchController.dart';
@@ -26,6 +27,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   TextEditingController txtIdentity =new TextEditingController();
   TextEditingController txtNameAndSurname =new TextEditingController();
   TextEditingController txtClass =new TextEditingController();
+  TextEditingController txtFirstSelect=new TextEditingController();
+  TextEditingController txtSecondSelect=new TextEditingController();
   TextEditingController txtParentNameAndSurname =new TextEditingController();
   TextEditingController txtAddress =new TextEditingController();
   TextEditingController txtPhone =new TextEditingController();
@@ -54,9 +57,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
               future: _student,
               builder: (context,snapshot){
                 if(snapshot.hasData){
-                  txtIdentity.text=snapshot.data!.id;
+                  txtIdentity.text=snapshot.data!.id==""?Token.userName:snapshot.data!.id;
                   txtNameAndSurname.text=snapshot.data!.nameAndSurname;
                   txtClass.text=snapshot.data!.className;
+                  txtFirstSelect.text=snapshot.data!.firstSelect==0?"1":snapshot.data!.firstSelect.toString();
+                  txtSecondSelect.text=snapshot.data!.secondSelect==0?"1":snapshot.data!.secondSelect.toString();
                   txtParentNameAndSurname.text=snapshot.data!.parentNameAndSurname;
                   txtAddress.text=snapshot.data!.address;
                   txtPhone.text= snapshot.data!.phone;
@@ -86,11 +91,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
         child: ListView(
           shrinkWrap: true,
           children: [
-            inputDigital(txtIdentity,"99999999999", "T.C. Kimlik No", maskIdentity),
+            //inputDigital(txtIdentity,"99999999999", "T.C. Kimlik No", maskIdentity),
             inputText(txtNameAndSurname, "Adı ve Soyadı", false,TextInputType.text),
             inputText(txtClass, "Sınıf ve Şubesi ", false,TextInputType.text),
-            Choice(titleText:"1. Tercihiniz"),
-            Choice(titleText:"2. Tercihiniz"),
+            Choice(titleText:"1. Tercihiniz",selectValue: txtFirstSelect,),
+            Choice(titleText:"2. Tercihiniz",selectValue: txtSecondSelect,),
             inputText(txtParentNameAndSurname, "Velinin Adı ve Soyadı ", false,TextInputType.text),
             inputText(txtAddress, "Adresi ", false,TextInputType.text),
             inputDigital(txtPhone, "0 (999) 999 99 99", "Öğrencinin Telefonu", maskPhone),
@@ -112,7 +117,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
 
   Widget showLogoutButton(){
     return Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+      padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
       child: ElevatedButton(
         style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
         child: Text("Çıkış"),
@@ -125,14 +130,34 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
 
   Widget showSaveButton(){
     return Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+      padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
       child: ElevatedButton(
         style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
         child: Text("Kaydet"),
         onPressed: (){
-          BranchController().getBranchAll();
+          //BranchController().getBranchAll();
+          //print(txtFirstSelect.text);
           if(formKey.currentState!.validate()){
             print("Giriş");
+            print(txtFirstSelect.text);
+            var student=Student(
+                id: txtIdentity.text,
+                nameAndSurname: txtNameAndSurname.text,
+                firstSelect: int.parse(txtFirstSelect.text),
+                secondSelect: int.parse(txtSecondSelect.text),
+                parentNameAndSurname: txtParentNameAndSurname.text,
+                className: txtClass.text,
+                address: txtAddress.text,
+                phone: txtPhone.text,
+                email: txtEmail.text,
+                score: 0,
+                isDeleted: false);
+
+            if(txtFirstSelect.text==txtSecondSelect.text){
+              showToAlert(context, "Tercihleriniz aynı olamaz");
+            }else{
+              StudentController().postStudent(student);
+            }
           }
         },
       ),

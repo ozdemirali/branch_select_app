@@ -1,6 +1,8 @@
 class Student{
   final String id;
   final String nameAndSurname;
+  final int firstSelect;
+  final int secondSelect;
   final String parentNameAndSurname;
   final String className;
   final String address;
@@ -12,6 +14,8 @@ class Student{
   Student({
     required this.id,
     required this.nameAndSurname,
+    required this.firstSelect,
+    required this.secondSelect,
     required this.parentNameAndSurname,
     required this.className,
     required this.address,
@@ -24,13 +28,31 @@ class Student{
   factory Student.fromJson(Map<String,dynamic>json){
     return Student(
         id: json["Id"],
+        firstSelect: json["FirstSelect"],
+        secondSelect: json["SecondSelect"],
         nameAndSurname: json["NameAndSurname"],
         parentNameAndSurname: json["ParentNameAndSurname"],
-        className: json["ClassName"],
+        className: json["Class"],
         address: json["Address"],
         phone: json["Phone"],
         email: json["Email"],
         score: json["Score"],
         isDeleted: json["IsDeleted"]);
+  }
+
+
+  //We have not all parameters so that same parameter is removed by this method
+  toJson(){
+    return{
+      "Id":id,
+      "FirstSelect":firstSelect,
+      "SecondSelect":secondSelect,
+      "NameAndSurname":nameAndSurname,
+      "Class":className,
+      "ParentNameAndSurname":parentNameAndSurname,
+      "Address":address,
+      "Phone":phone,
+      "Email":email,
+    };
   }
 }

@@ -8,6 +8,8 @@ final formKey = GlobalKey<FormState>();
 TextEditingController txtIdentity =new TextEditingController();
 TextEditingController txtNameAndSurname =new TextEditingController();
 TextEditingController txtClass =new TextEditingController();
+TextEditingController txtFirstSelect=new TextEditingController();
+TextEditingController txtSecondSelect=new TextEditingController();
 TextEditingController txtParentNameAndSurname =new TextEditingController();
 TextEditingController txtAddress =new TextEditingController();
 TextEditingController txtPhone =new TextEditingController();
@@ -37,8 +39,8 @@ showToStudentChoice(BuildContext context) async{
                         inputDigital(txtIdentity,"99999999999", "T.C. Kimlik No", maskIdentity),
                         inputText(txtNameAndSurname, "Adı ve Soyadı", false,TextInputType.text),
                         inputText(txtClass, "Sınıf ve Şubesi ", false,TextInputType.text),
-                        Choice(titleText:"1. Tercihiniz"),
-                        Choice(titleText:"2. Tercihiniz"),
+                        Choice(titleText:"1. Tercihiniz",selectValue: txtFirstSelect,),
+                        Choice(titleText:"2. Tercihiniz",selectValue: txtSecondSelect,),
                         inputText(txtParentNameAndSurname, "Velinin Adı ve Soyadı ", false,TextInputType.text),
                         inputText(txtAddress, "Sınıf ve Şubesi ", false,TextInputType.text),
                         inputDigital(txtPhone, "0 (999) 999 99 99", "Öğrencinin Telefonu", maskPhone),

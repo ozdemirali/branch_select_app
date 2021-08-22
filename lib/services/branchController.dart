@@ -18,11 +18,11 @@ class BranchController{
       final response= await http.get(url,headers: {
         HttpHeaders.authorizationHeader:"Bearer "+Token.accessToken
       });
-      print(response.statusCode);
+      //print(response.statusCode);
       if(response.statusCode==200){
         var value=jsonDecode(response.body);
         value.forEach((v){
-          print(v["Id"]);
+          //print(v["Id"]);
           data.add(Branch.fromJson(v));
         });
         return data;
