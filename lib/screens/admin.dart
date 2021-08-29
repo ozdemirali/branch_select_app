@@ -57,12 +57,7 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
                 textStyle: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),
                 primary: Colors.white
               ),
-              // style: TextButton.styleFrom(
-              //   //padding: const EdgeInsets.all(16.0),
-              //   primary: Colors.white,
-              //   textStyle: const TextStyle(fontSize: 20),
-              // ),
-              onPressed: (){print("Çıkış");widget.logoutCallback();},
+              onPressed: (){widget.logoutCallback();},
               child: Text("Çıkış"))
         ],
       ),

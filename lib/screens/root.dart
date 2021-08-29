@@ -51,6 +51,7 @@ class RootState extends State<Root> {
       authStatus=AuthStatus.Not_Logged_In;
       //print("Logout");
       Token.accessToken="";
+      Token.role="";
       //print("token -->"+Token.accessToken);
 
     });
@@ -66,7 +67,8 @@ class RootState extends State<Root> {
         );
         break;
       case AuthStatus.Logged_In:
-        if(Token.userName.toLowerCase()=="admin"){
+
+        if(Token.role=="Admin"){
           return Admin(
             auth: widget.auth,
             logoutCallback: logoutCallBack,

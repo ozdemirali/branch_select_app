@@ -24,13 +24,19 @@ class Auth implements BaseAuth{
       final http = new IOClient(ioc);
       http.post(url, body: {"userName": userName, "password": password,"grant_type":"password"}).then(
               (response) {
-            //print("Reponse status : ${response.statusCode}");
-            //print("Response body : ${response.body}")
-
             var myResponse = jsonDecode(response.body);
             if(response.statusCode==200){
               Token.accessToken=myResponse["access_token"];
               Token.userName=userName;
+
+              http.get(Uri.parse(UrlAddress().getRole+userName),
+                  headers: { HttpHeaders.authorizationHeader:"Bearer "+Token.accessToken}).then(
+                      (response){
+                        if(response.statusCode==200){
+                          //print(jsonDecode(response.body)["role"]);
+                          Token.role=jsonDecode(response.body)["role"];
+                        }
+                      });
             }
             if(response.statusCode==400){
               Token.error=myResponse["error_description"];
