@@ -1,4 +1,6 @@
 import 'package:branch_select_app/dialog/showToStudentChoice.dart';
+import 'package:branch_select_app/models/studentChoice.dart';
+import 'package:branch_select_app/services/studentController.dart';
 import 'package:branch_select_app/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -14,6 +16,8 @@ class ChoicesMade extends StatefulWidget{
 
 class ChoicesMadeState extends State<ChoicesMade> {
 
+  late Future<List<StudentChoice>> studentChoice;
+
   Map<String, double> dataMap = {
     "Yazılım": 15,
     "Ağ": 3,
@@ -26,6 +30,14 @@ class ChoicesMadeState extends State<ChoicesMade> {
   ];
    List<String> item=["A","B","C","D","E","F","H","I","J","K"];
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    studentChoice=StudentController().getStudentAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -36,42 +48,57 @@ class ChoicesMadeState extends State<ChoicesMade> {
         children: [
           chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.right,false,true,true,false),
           Expanded(
-            child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: item.length,
-                  itemBuilder: (BuildContext context,int position){
-                   return Dismissible(
-                     key: Key(item[position]),
-                     onDismissed:(direction) async{
-                       print("silindi");
-                     },
-                     secondaryBackground:Container(
-                       child: Center(
-                         child: Text("Sil",style: TextStyle(fontWeight: FontWeight.bold,color:Colors.white),),
-                       ),
-                       color: Colors.red,
-                     ),
-                     background: Container(),
-                     child: Card(
-                       color: Colors.white,
-                       elevation: 2.0,
-                       child: ListTile(
-                         leading: CircleAvatar(
-                           //backgroundColor: _appointedWorkplaceList[position].type=="Alan Dışı"?Colors.red:Colors.blue,
-                           child: Text("9,2"),
-                         ),
-                         title: Text(item[position]),
-                         subtitle: Text(item[position]),
-                         onTap: (){
-                           print("Seçildi");
-                           showToStudentChoice(context);
-                           // showToNotification(context,_appointedWorkplaceList[position]);
-                         },
-                       ),
-                     ),
-                   );
-                },
-              ),
+            child:FutureBuilder<List<StudentChoice>>(
+              future:studentChoice,
+              builder:(context,snapshot){
+                if(snapshot.hasData){
+                  return
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (BuildContext context,int position){
+                        return Dismissible(
+                          key: Key(snapshot.data![position].toString()),
+                          onDismissed:(direction) async{
+                            print("silindi");
+                          },
+                          secondaryBackground:Container(
+                            child: Center(
+                              child: Text("Sil",style: TextStyle(fontWeight: FontWeight.bold,color:Colors.white),),
+                            ),
+                            color: Colors.red,
+                          ),
+                          background: Container(),
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 2.0,
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: snapshot.data![position].choice==""?Colors.red:Colors.green,
+                                child: Text(snapshot.data![position].score.toString(),style:TextStyle(fontWeight: FontWeight.normal,color:Colors.white)),
+                              ),
+                              title: Text(snapshot.data![position].nameAndSurname),
+                              subtitle:snapshot.data![position].choice!=""?
+                                        Text(snapshot.data![position].choice):
+                                        Text("Henüz Seçim Yapmamış")  ,
+                              onTap: (){
+                                print("Seçildi");
+                                showToStudentChoice(context);
+                                // showToNotification(context,_appointedWorkplaceList[position]);
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                }else if(snapshot.hasError){
+                  return Text("Hata Oluştu");
+                }
+                return const CircularProgressIndicator();
+              }
+            ),
+
           ),
         ],
       ),

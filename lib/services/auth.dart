@@ -27,13 +27,14 @@ class Auth implements BaseAuth{
             var myResponse = jsonDecode(response.body);
             if(response.statusCode==200){
               Token.accessToken=myResponse["access_token"];
-              Token.userName=userName;
+              //Token.userName=userName;
 
               http.get(Uri.parse(UrlAddress().getRole+userName),
                   headers: { HttpHeaders.authorizationHeader:"Bearer "+Token.accessToken}).then(
                       (response){
                         if(response.statusCode==200){
                           //print(jsonDecode(response.body)["role"]);
+                          Token.userName=jsonDecode(response.body)["id"];
                           Token.role=jsonDecode(response.body)["role"];
                         }
                       });
