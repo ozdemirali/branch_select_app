@@ -1,5 +1,7 @@
 import 'package:branch_select_app/dialog/showToStudentChoice.dart';
+import 'package:branch_select_app/models/branchStatus.dart';
 import 'package:branch_select_app/models/studentChoice.dart';
+import 'package:branch_select_app/models/studentChoiceStatus.dart';
 import 'package:branch_select_app/services/studentController.dart';
 import 'package:branch_select_app/widgets/chart.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +19,14 @@ class ChoicesMade extends StatefulWidget{
 class ChoicesMadeState extends State<ChoicesMade> {
 
   late Future<List<StudentChoice>> studentChoice;
+  late Future<StudentChoiceStatus> studentChoiceStatus;
 
-  Map<String, double> dataMap = {
-    "Yazılım": 15,
-    "Ağ": 3,
-    "Seçim Yapmamış":2
-  };
+  late Map<String,double> dataMap;
+  // Map<String, double> dataMap = {
+  //   "Yazılım": 15,
+  //   "Ağ": 3,
+  //   "Seçim Yapmamış":2
+  // };
   List<Color> colorList = [
     Colors.blue,
     Colors.yellow,
@@ -36,6 +40,7 @@ class ChoicesMadeState extends State<ChoicesMade> {
     // TODO: implement initState
     super.initState();
     studentChoice=StudentController().getStudentAll();
+    studentChoiceStatus=StudentController().getBranchStatus();
   }
 
   @override
@@ -46,7 +51,22 @@ class ChoicesMadeState extends State<ChoicesMade> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.right,false,true,true,false),
+          //chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.right,false,true,true,false),
+          FutureBuilder<StudentChoiceStatus>(
+              future: studentChoiceStatus,
+              builder: (context,snapshot){
+                if(snapshot.hasData){
+                  dataMap={
+                    snapshot.data!.firstBranch:snapshot.data!.firstBranchNumber.toDouble(),
+                    snapshot.data!.secondBranch:snapshot.data!.secondBranchNumber.toDouble(),
+                    "Seçim Yapmamış":(snapshot.data!.total-(snapshot.data!.firstBranchNumber+snapshot.data!.secondBranchNumber)).toDouble(),
+                  };
+                  return  chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.right,false,true,true,false);
+                  }else if(snapshot.hasError){
+                  return Text("Hata Oluştu");
+                }
+                return Text("Grafik Bilgileri Yükleniyor");
+          }),
           Expanded(
             child:FutureBuilder<List<StudentChoice>>(
               future:studentChoice,
@@ -95,7 +115,7 @@ class ChoicesMadeState extends State<ChoicesMade> {
                 }else if(snapshot.hasError){
                   return Text("Hata Oluştu");
                 }
-                return const CircularProgressIndicator();
+                return Text("Öğrenci Bilgileri Yükleniyor");
               }
             ),
 

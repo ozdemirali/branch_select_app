@@ -1,3 +1,6 @@
+
+import 'package:branch_select_app/models/studentChoiceStatus.dart';
+import 'package:branch_select_app/services/studentController.dart';
 import 'package:branch_select_app/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -12,37 +15,72 @@ class BranchStatus extends StatefulWidget{
 
 class BranchStatusState extends State<BranchStatus> {
 
-  Map<String, double> dataMap = {
-    "Yazılım": 15,
-    "Ağ": 3,
-  };
+  late Future<StudentChoiceStatus> studentChoiceStatus;
+  late Map<String,double> dataMap;
+  late bool status;
+  // Map<String, double> dataMap = {
+  //   "Yazılım": 15,
+  //   "Ağ": 3,
+  // };
   List<Color> colorList = [
     Colors.blue,
     Colors.yellow,
+    Colors.red,
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    studentChoiceStatus=StudentController().getBranchStatus();
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
           height: MediaQuery.of(context).size.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-          chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.bottom,false,true,false,false),
-          Padding(
-            padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-            child: ElevatedButton(
-              style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
-              child: Text("Sınıfları Oluştur"),
-              onPressed: (){
-               print("Kaydet");
-              },
-            ),
-          ),
-        ],
-      ),
+          child:FutureBuilder<StudentChoiceStatus>(
+                  future: studentChoiceStatus,
+                  builder: (context,snapshot){
+                    if(snapshot.hasData){
+                      dataMap={
+                        snapshot.data!.firstBranch:snapshot.data!.firstBranchNumber.toDouble(),
+                        snapshot.data!.secondBranch:snapshot.data!.secondBranchNumber.toDouble(),
+                        "Seçim Yapmayanlar":(snapshot.data!.total.toDouble()-(snapshot.data!.firstBranchNumber+snapshot.data!.secondBranchNumber)),
+                      };
+                      if(snapshot.data!.total==(snapshot.data!.firstBranchNumber+snapshot.data!.secondBranchNumber)){
+                        status=true;
+                      }else{
+                        status=false;
+                      }
+                      //return chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.bottom,false,true,false,false);
+                      return
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.bottom,false,true,false,false),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+                                child: ElevatedButton(
+                                  style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+                                  child: Text("Sınıfları Oluştur"),
+                                  onPressed:status==false?null:
+                                      (){
+                                    print("Kaydet");
+                                    },
+                                ),
+                              ),
+                            ],
+                          );
+                    }else if(snapshot.hasError){
+                      return Text("Hata Oluştu");
+                    }
+                    return Text("Veriler Geliyor");
+                  }),
     );
   }
+
+
 }

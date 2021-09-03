@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:branch_select_app/models/student.dart';
 import 'package:branch_select_app/models/studentChoice.dart';
+import 'package:branch_select_app/models/studentChoiceStatus.dart';
 import 'package:branch_select_app/models/token.dart';
 import 'package:branch_select_app/models/urlAddress.dart';
 import 'package:http/io_client.dart';
@@ -30,6 +30,27 @@ class StudentController{
           print(e.toString());
           throw Exception('Bilgileri yüklerken problem Oluştu');
        }
+  }
+
+  Future<StudentChoiceStatus> getBranchStatus() async{
+      try{
+        var url=Uri.parse(UrlAddress().getBranchStatus);
+        final ioc = new HttpClient();
+        ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+        final http = new IOClient(ioc);
+
+        final response= await http.get(url,headers: {
+          HttpHeaders.authorizationHeader:"Bearer "+Token.accessToken
+        });
+        if(response.statusCode==200){
+          //print(response.body);
+          return StudentChoiceStatus.fromJson(jsonDecode(response.body));
+        }else{
+          throw Exception('Bilgileri yüklerken problem Oluştu');
+        }
+      }catch (e){
+        throw Exception('Bilgileri yüklerken problem Oluştu');
+      }
   }
 
   Future<List<StudentChoice>> getStudentAll() async{
