@@ -6,4 +6,6 @@ class UrlAddress{
   String getBranchStatus="https://192.168.1.88:45455/api/student/getBranchStatus";
   String postStudent="https://192.168.1.88:45455/api/student/post";
   String getBranchAll="https://192.168.1.88:45455/api/branch/get";
+  String getSchoolInformation="https://192.168.1.88:45455/api/school/get";
+  String postSchoolInformation="https://192.168.1.88:45455/api/school/post";
 }

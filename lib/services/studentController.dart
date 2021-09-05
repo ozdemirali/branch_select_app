@@ -89,8 +89,8 @@ class StudentController{
             ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
             final http = new IOClient(ioc);
             //print(student.toJson());
-            print(Token.accessToken);
-            print(jsonEncode(student.toJson()));
+            //print(Token.accessToken);
+            //print(jsonEncode(student.toJson()));
 
             final response= await http.post(url,headers:{
               HttpHeaders.authorizationHeader:"Bearer "+Token.accessToken,

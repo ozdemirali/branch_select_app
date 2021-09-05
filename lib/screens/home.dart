@@ -1,7 +1,6 @@
 import 'package:branch_select_app/dialog/showToAlert.dart';
 import 'package:branch_select_app/models/student.dart';
 import 'package:branch_select_app/models/token.dart';
-import 'package:branch_select_app/services/branchController.dart';
 import 'package:branch_select_app/services/studentController.dart';
 import 'package:branch_select_app/widgets/choice.dart';
 import 'package:branch_select_app/widgets/inputDigital.dart';
@@ -35,13 +34,13 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   TextEditingController txtEmail =new TextEditingController();
   var maskIdentity = new MaskTextInputFormatter(mask: '###########', filter: { "#": RegExp(r'[0-9]') });
   var maskPhone = new MaskTextInputFormatter(mask: '# (###) ### ## ##', filter: { "#": RegExp(r'[0-9]') });
-  late Future<Student> _student;
+  late Future<Student> student;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _student= StudentController().getById(Token.userName);
+    student= StudentController().getById(Token.userName);
   }
 
   @override
@@ -54,7 +53,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
       body: Stack(
         children: [
           FutureBuilder<Student>(
-              future: _student,
+              future: student,
               builder: (context,snapshot){
                 if(snapshot.hasData){
                   txtIdentity.text=snapshot.data!.id==""?Token.userName:snapshot.data!.id;

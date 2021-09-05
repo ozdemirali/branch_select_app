@@ -43,7 +43,7 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(Token.userName,style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.normal)),
         bottom: TabBar(

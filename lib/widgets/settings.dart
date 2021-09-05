@@ -1,5 +1,6 @@
+import 'package:branch_select_app/models/school.dart';
+import 'package:branch_select_app/services/schoolController.dart';
 import 'package:branch_select_app/widgets/inputText.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget{
@@ -15,37 +16,72 @@ class SettingsState extends State<Settings> {
   TextEditingController txtSchoolName=new TextEditingController();
   TextEditingController txtBranchTeacher=new TextEditingController();
   TextEditingController txtAssistantDirector=new TextEditingController();
-  TextEditingController txtFirstBranchName=new TextEditingController();
-  TextEditingController txtSecondBranchName=new TextEditingController();
+  TextEditingController txtFirstBranch=new TextEditingController();
+  TextEditingController txtSecondBranch=new TextEditingController();
   TextEditingController txtMinClassCount=new TextEditingController();
+  late Future<School> school;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    school=SchoolController().get();
+    print("initState");
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print(MediaQuery.of(context).size.height);
+    //print(MediaQuery.of(context).size.height);
     return Stack(
       children: [
-        Container(
-          margin: EdgeInsets.all(2.0),
-          height: MediaQuery.of(context).size.height,
-          child:
-            Form(
-            key: formKey,
-            child: ListView(
-              children: [
-                inputText(txtSchoolName, "Okul Adı", false, TextInputType.text),
-                inputText(txtBranchTeacher, "Alan Öğretmeni", false, TextInputType.text),
-                inputText(txtAssistantDirector, "Müdür Yardımcısı", false, TextInputType.text),
-                inputText(txtFirstBranchName, "1. Dal İsmi", false, TextInputType.text),
-                inputText(txtSecondBranchName, "2. Dal İsmi", false, TextInputType.text),
-                inputText(txtMinClassCount, "Minimum Öğrenci Sayısı", false, TextInputType.number),
-                saveButton()
-              ],
+            FutureBuilder<School>(
+              future: school,
+              builder: (context,snapshot){
+                if(snapshot.hasData){
+                  txtSchoolName.text=snapshot.data!.schoolName;
+                  txtBranchTeacher.text=snapshot.data!.branchTeacher;
+                  txtAssistantDirector.text=snapshot.data!.assistantDirector;
+                  txtFirstBranch.text=snapshot.data!.firstBranch;
+                  txtSecondBranch.text=snapshot.data!.secondBranch;
+                  txtMinClassCount.text=snapshot.data!.minClassCount.toString();
+                  return showForm();
+                }else if(snapshot.hasError){
+                  return Center(
+                    child: Text("Hata Oluştu"),
+                  );
+                }
+                return Center(
+                  child: const CircularProgressIndicator(),
+                );
+              },
             ),
-          )
-        ),
       ],
     );
+
+  }
+
+  Widget showForm(){
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Form(
+        key: formKey,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            inputText(txtSchoolName, "Okul Adı", false, TextInputType.text),
+            inputText(txtBranchTeacher, "Alan Öğretmeni", false, TextInputType.text),
+            inputText(txtAssistantDirector, "Müdür Yardımcısı", false, TextInputType.text),
+            inputText(txtFirstBranch, "1. Dal İsmi", false, TextInputType.text),
+            inputText(txtSecondBranch, "2. Dal İsmi", false, TextInputType.text),
+            inputText(txtMinClassCount, "Minimum Öğrenci Sayısı", false, TextInputType.number),
+            saveButton(),
+          ],
+        ),
+      ) ,
+    );
+
+
 
   }
 
@@ -57,7 +93,16 @@ class SettingsState extends State<Settings> {
         child: Text("Kaydet"),
         onPressed: (){
           if(formKey.currentState!.validate()){
-            print("Kaydet");
+           var school=School(               schoolName:txtSchoolName.text,
+               branchTeacher:txtBranchTeacher.text,
+               assistantDirector:txtAssistantDirector.text,
+               firstBranch: txtFirstBranch.text,
+               secondBranch: txtSecondBranch.text,
+               minClassCount:int.parse(txtMinClassCount.text));
+
+           //print(txtSchoolName.text);
+           //print(school.schoolName);
+           SchoolController().post(school);
           }
         },
       ),
@@ -65,15 +110,3 @@ class SettingsState extends State<Settings> {
   }
 }
 
-// Widget settings(){
-//   return Container(
-//     padding: EdgeInsets.all(2.0),
-//     child: Form(
-//       child: ListView(
-//         children: [
-//
-//         ],
-//       ),
-//     ),
-//   );
-// }
