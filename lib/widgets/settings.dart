@@ -26,7 +26,7 @@ class SettingsState extends State<Settings> {
     // TODO: implement initState
     super.initState();
     school=SchoolController().get();
-    print("initState");
+    //print("initState");
   }
 
   @override

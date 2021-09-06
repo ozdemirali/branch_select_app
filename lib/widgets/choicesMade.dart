@@ -32,7 +32,6 @@ class ChoicesMadeState extends State<ChoicesMade> {
     Colors.yellow,
     Colors.red,
   ];
-   List<String> item=["A","B","C","D","E","F","H","I","J","K"];
 
 
   @override
@@ -99,7 +98,8 @@ class ChoicesMadeState extends State<ChoicesMade> {
                                 child: Text(snapshot.data![position].score.toString(),style:TextStyle(fontWeight: FontWeight.normal,color:Colors.white)),
                               ),
                               title: Text(snapshot.data![position].nameAndSurname),
-                              subtitle:snapshot.data![position].choice!=""?
+                              // ignore: unnecessary_null_comparison
+                              subtitle:snapshot.data![position].choice!=null?
                                         Text(snapshot.data![position].choice):
                                         Text("Henüz Seçim Yapmamış")  ,
                               onTap: (){

@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:branch_select_app/models/school.dart';
 import 'package:branch_select_app/models/token.dart';
 import 'package:branch_select_app/models/urlAddress.dart';
+import 'package:http/http.dart';
 import 'package:http/io_client.dart';
+
+import 'package:http/http.dart' as https;
 
 class SchoolController{
   Future<School> get() async{
@@ -40,11 +42,41 @@ class SchoolController{
         HttpHeaders.contentTypeHeader:"application/json"
       },body:jsonEncode(school.toJson()) );
 
-      print(response.statusCode);
-      print(response.body);
+     // print(response.statusCode);
+      //print(response.body);
 
     }catch(error){
 
     }
   }
+
+  Future uploadFile(File file) async{
+
+    var url=Uri.parse(UrlAddress().postSchoolFile);
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Authorization": "Bearer " + Token.accessToken
+    };
+
+    var request = MultipartRequest('POST', url);
+
+    request.headers.addAll(headers);
+    request.files.add(await MultipartFile.fromPath('file', file.path));
+
+    HttpClient httpClient = HttpClient();
+    httpClient .badCertificateCallback = (X509Certificate cert,String host,int port) =>true;
+    StreamedResponse streamedResponse = await IOClient(
+        httpClient
+    ).send(request);
+
+    String body = await streamedResponse.stream.bytesToString();
+    if(streamedResponse.statusCode == 200 ){
+      print(body);
+    }
+
+  }
+
+
+
 }
+

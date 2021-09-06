@@ -2,6 +2,7 @@ import 'package:branch_select_app/models/token.dart';
 import 'package:branch_select_app/services/auth.dart';
 import 'package:branch_select_app/widgets/branchStatus.dart';
 import 'package:branch_select_app/widgets/choicesMade.dart';
+import 'package:branch_select_app/widgets/fileUpload.dart';
 import 'package:branch_select_app/widgets/settings.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +68,7 @@ class AdminState extends State<Admin> with SingleTickerProviderStateMixin {
           ChoicesMade(),
           BranchStatus(),
           Settings(),
-          Text("Öğrenci Bilgileri Yükle"),
+          FileUpload(),
         ],
       ),
     );

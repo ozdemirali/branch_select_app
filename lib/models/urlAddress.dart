@@ -8,4 +8,6 @@ class UrlAddress{
   String getBranchAll="https://192.168.1.88:45455/api/branch/get";
   String getSchoolInformation="https://192.168.1.88:45455/api/school/get";
   String postSchoolInformation="https://192.168.1.88:45455/api/school/post";
+  String postSchoolFile="https://192.168.1.88:45455/api/school/upload";
+
 }
