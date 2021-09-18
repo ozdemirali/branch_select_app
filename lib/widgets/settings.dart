@@ -69,12 +69,12 @@ class SettingsState extends State<Settings> {
         child: ListView(
           shrinkWrap: true,
           children: [
-            inputText(txtSchoolName, "Okul Adı", false, TextInputType.text),
-            inputText(txtBranchTeacher, "Alan Öğretmeni", false, TextInputType.text),
-            inputText(txtAssistantDirector, "Müdür Yardımcısı", false, TextInputType.text),
-            inputText(txtFirstBranch, "1. Dal İsmi", false, TextInputType.text),
-            inputText(txtSecondBranch, "2. Dal İsmi", false, TextInputType.text),
-            inputText(txtMinClassCount, "Minimum Öğrenci Sayısı", false, TextInputType.number),
+            inputText(txtSchoolName, "Okul Adı",true, false, TextInputType.text),
+            inputText(txtBranchTeacher, "Alan Öğretmeni",true, false, TextInputType.text),
+            inputText(txtAssistantDirector, "Müdür Yardımcısı",true, false, TextInputType.text),
+            inputText(txtFirstBranch, "1. Dal İsmi",true, false, TextInputType.text),
+            inputText(txtSecondBranch, "2. Dal İsmi",true, false, TextInputType.text),
+            inputText(txtMinClassCount, "Minimum Öğrenci Sayısı",true, false, TextInputType.number),
             saveButton(),
           ],
         ),
@@ -93,7 +93,7 @@ class SettingsState extends State<Settings> {
         child: Text("Kaydet"),
         onPressed: (){
           if(formKey.currentState!.validate()){
-           var school=School(               schoolName:txtSchoolName.text,
+           var school=School(schoolName:txtSchoolName.text,
                branchTeacher:txtBranchTeacher.text,
                assistantDirector:txtAssistantDirector.text,
                firstBranch: txtFirstBranch.text,

@@ -3,6 +3,7 @@ class Student{
   final String nameAndSurname;
   final int firstSelect;
   final int secondSelect;
+  final String choice;
   final String parentNameAndSurname;
   final String className;
   final String address;
@@ -16,6 +17,7 @@ class Student{
     required this.nameAndSurname,
     required this.firstSelect,
     required this.secondSelect,
+    required this.choice,
     required this.parentNameAndSurname,
     required this.className,
     required this.address,
@@ -30,6 +32,7 @@ class Student{
         id: json["Id"],
         firstSelect: json["FirstSelect"],
         secondSelect: json["SecondSelect"],
+        choice: json["Choice"],
         nameAndSurname: json["NameAndSurname"],
         parentNameAndSurname: json["ParentNameAndSurname"],
         className: json["Class"],

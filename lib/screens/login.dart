@@ -78,14 +78,14 @@ class LoginState  extends State<Login>{
   Widget showEmailInput(){
     return new Padding(
       padding: EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
-      child: inputText(txtUserName, "Kullanıcı Adı",false,TextInputType.text),
+      child: inputText(txtUserName, "Kullanıcı Adı",true,false,TextInputType.text),
     );
   }
 
   Widget showPasswordInput(){
     return new Padding(
       padding:const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-      child: inputText(txtPassword, "Şifreniz",true,TextInputType.emailAddress),
+      child: inputText(txtPassword, "Şifreniz",true,true,TextInputType.emailAddress),
     );
   }
 

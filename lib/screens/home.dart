@@ -28,6 +28,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   TextEditingController txtClass =new TextEditingController();
   TextEditingController txtFirstSelect=new TextEditingController();
   TextEditingController txtSecondSelect=new TextEditingController();
+  TextEditingController txtChoice=new TextEditingController();
   TextEditingController txtParentNameAndSurname =new TextEditingController();
   TextEditingController txtAddress =new TextEditingController();
   TextEditingController txtPhone =new TextEditingController();
@@ -35,6 +36,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   var maskIdentity = new MaskTextInputFormatter(mask: '###########', filter: { "#": RegExp(r'[0-9]') });
   var maskPhone = new MaskTextInputFormatter(mask: '# (###) ### ## ##', filter: { "#": RegExp(r'[0-9]') });
   late Future<Student> student;
+  late double score;
+
 
   @override
   void initState() {
@@ -61,10 +64,12 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                   txtClass.text=snapshot.data!.className;
                   txtFirstSelect.text=snapshot.data!.firstSelect==0?"1":snapshot.data!.firstSelect.toString();
                   txtSecondSelect.text=snapshot.data!.secondSelect==0?"1":snapshot.data!.secondSelect.toString();
+                  txtChoice.text=snapshot.data!.choice;
                   txtParentNameAndSurname.text=snapshot.data!.parentNameAndSurname;
                   txtAddress.text=snapshot.data!.address;
                   txtPhone.text= snapshot.data!.phone;
                   txtEmail.text=snapshot.data!.email;
+                  score=snapshot.data!.score;
                   return showForm();
                 }else if(snapshot.hasError){
                   return Center(
@@ -91,19 +96,21 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
           shrinkWrap: true,
           children: [
             //inputDigital(txtIdentity,"99999999999", "T.C. Kimlik No", maskIdentity),
-            inputText(txtNameAndSurname, "Adı ve Soyadı", false,TextInputType.text),
-            inputText(txtClass, "Sınıf ve Şubesi ", false,TextInputType.text),
+            inputText(txtNameAndSurname, "Adı ve Soyadı", true,false,TextInputType.text),
+            inputText(txtClass, "Sınıf ve Şubesi ",true, false,TextInputType.text),
             Choice(titleText:"1. Tercihiniz",selectValue: txtFirstSelect,),
             Choice(titleText:"2. Tercihiniz",selectValue: txtSecondSelect,),
-            inputText(txtParentNameAndSurname, "Velinin Adı ve Soyadı ", false,TextInputType.text),
-            inputText(txtAddress, "Adresi ", false,TextInputType.text),
+            inputText(txtParentNameAndSurname, "Velinin Adı ve Soyadı ",true, false,TextInputType.text),
+            inputText(txtAddress, "Adresi ",true, false,TextInputType.text),
             inputDigital(txtPhone, "0 (999) 999 99 99", "Öğrencinin Telefonu", maskPhone),
-            inputText(txtEmail, "Email", false,TextInputType.emailAddress),
+            inputText(txtEmail, "Email", true,false,TextInputType.emailAddress),
+            txtChoice.text.isEmpty?Text(""):inputText(txtChoice, "Sonuc", false,false,TextInputType.text),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment:CrossAxisAlignment.start,
               children: [
                 showLogoutButton(),
+                showScoreButton(),
                 showSaveButton()
               ],
             ),
@@ -127,29 +134,42 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
     );
   }
 
+  Widget showScoreButton(){
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+      child: ElevatedButton(
+        style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+        child: Text("Puanınız "+score.toString()),
+        onPressed: null,
+      ),
+    );
+  }
+
+
   Widget showSaveButton(){
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
       child: ElevatedButton(
         style:  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
         child: Text("Kaydet"),
-        onPressed: (){
+        onPressed:txtChoice.text.isEmpty?(){
           //BranchController().getBranchAll();
           //print(txtFirstSelect.text);
           if(formKey.currentState!.validate()){
-            print("Giriş");
-            print(txtFirstSelect.text);
+            // print("Giriş");
+            // print(txtFirstSelect.text);
             var student=Student(
                 id: txtIdentity.text,
                 nameAndSurname: txtNameAndSurname.text,
                 firstSelect: int.parse(txtFirstSelect.text),
                 secondSelect: int.parse(txtSecondSelect.text),
+                choice: txtChoice.text,
                 parentNameAndSurname: txtParentNameAndSurname.text,
                 className: txtClass.text,
                 address: txtAddress.text,
                 phone: txtPhone.text,
                 email: txtEmail.text,
-                score: 0,
+                score: score,
                 isDeleted: false);
 
             if(txtFirstSelect.text==txtSecondSelect.text){
@@ -158,7 +178,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
               StudentController().postStudent(student);
             }
           }
-        },
+        }:null,
       ),
     );
   }

@@ -1,3 +1,5 @@
+
+
 import 'package:branch_select_app/widgets/choice.dart';
 import 'package:branch_select_app/widgets/inputDigital.dart';
 import 'package:branch_select_app/widgets/inputText.dart';
@@ -37,14 +39,14 @@ showToStudentChoice(BuildContext context) async{
                     child: Column(
                       children: [
                         inputDigital(txtIdentity,"99999999999", "T.C. Kimlik No", maskIdentity),
-                        inputText(txtNameAndSurname, "Adı ve Soyadı", false,TextInputType.text),
-                        inputText(txtClass, "Sınıf ve Şubesi ", false,TextInputType.text),
+                        inputText(txtNameAndSurname, "Adı ve Soyadı", true,false,TextInputType.text),
+                        inputText(txtClass, "Sınıf ve Şubesi ",true, false,TextInputType.text),
                         Choice(titleText:"1. Tercihiniz",selectValue: txtFirstSelect,),
                         Choice(titleText:"2. Tercihiniz",selectValue: txtSecondSelect,),
-                        inputText(txtParentNameAndSurname, "Velinin Adı ve Soyadı ", false,TextInputType.text),
-                        inputText(txtAddress, "Sınıf ve Şubesi ", false,TextInputType.text),
+                        inputText(txtParentNameAndSurname, "Velinin Adı ve Soyadı ",true, false,TextInputType.text),
+                        inputText(txtAddress, "Sınıf ve Şubesi ",true, false,TextInputType.text),
                         inputDigital(txtPhone, "0 (999) 999 99 99", "Öğrencinin Telefonu", maskPhone),
-                        inputText(txtEmail, "Email", false,TextInputType.emailAddress),
+                        inputText(txtEmail, "Email",true, false,TextInputType.emailAddress),
                       ],
                     ),
                   )
