@@ -1,5 +1,8 @@
 
 
+import 'package:branch_select_app/dialog/showToAlert.dart';
+import 'package:branch_select_app/models/student.dart';
+import 'package:branch_select_app/services/studentController.dart';
 import 'package:branch_select_app/widgets/choice.dart';
 import 'package:branch_select_app/widgets/inputDigital.dart';
 import 'package:branch_select_app/widgets/inputText.dart';
@@ -16,10 +19,29 @@ TextEditingController txtParentNameAndSurname =new TextEditingController();
 TextEditingController txtAddress =new TextEditingController();
 TextEditingController txtPhone =new TextEditingController();
 TextEditingController txtEmail =new TextEditingController();
+TextEditingController txtScore =new TextEditingController();
+
 var maskIdentity = new MaskTextInputFormatter(mask: '###########', filter: { "#": RegExp(r'[0-9]') });
 var maskPhone = new MaskTextInputFormatter(mask: '# (###) ### ## ##', filter: { "#": RegExp(r'[0-9]') });
+var maskScore = new MaskTextInputFormatter(mask: '##.##', filter: { "#": RegExp(r'[0-9]') });
 
-showToStudentChoice(BuildContext context) async{
+showToStudentChoice(BuildContext context,Student student) async{
+
+  txtIdentity.text=student.id;
+  txtNameAndSurname.text=student.nameAndSurname;
+  student.firstSelect==0?txtFirstSelect.text="1":txtFirstSelect.text=student.firstSelect.toString();
+  student.secondSelect==0?txtSecondSelect.text="2":txtSecondSelect.text=student.secondSelect.toString();
+  txtParentNameAndSurname.text=student.parentNameAndSurname;
+  txtClass.text=student.className;
+  txtAddress.text=student.address;
+  txtPhone.text=student.phone;
+  txtEmail.text=student.email;
+  txtScore.text=student.score.toString();
+
+
+
+
+
   await showDialog(
       context: context,
       builder: (BuildContext context){
@@ -44,9 +66,10 @@ showToStudentChoice(BuildContext context) async{
                         Choice(titleText:"1. Tercihiniz",selectValue: txtFirstSelect,),
                         Choice(titleText:"2. Tercihiniz",selectValue: txtSecondSelect,),
                         inputText(txtParentNameAndSurname, "Velinin Adı ve Soyadı ",true, false,TextInputType.text),
-                        inputText(txtAddress, "Sınıf ve Şubesi ",true, false,TextInputType.text),
+                        inputText(txtAddress, "Adresi ",true, false,TextInputType.text),
                         inputDigital(txtPhone, "0 (999) 999 99 99", "Öğrencinin Telefonu", maskPhone),
                         inputText(txtEmail, "Email",true, false,TextInputType.emailAddress),
+                        inputDigital(txtScore, "00.00", "Puanı", maskScore),
                       ],
                     ),
                   )
@@ -79,7 +102,32 @@ showToStudentChoice(BuildContext context) async{
                       ),
                       onPressed: (){
                         print("Kaydet");
-                        Navigator.pop(context);
+                        if(formKey.currentState!.validate()){
+                          // print("Giriş");
+                          // print(txtFirstSelect.text);
+                          var student=Student(
+                              id: txtIdentity.text,
+                              nameAndSurname: txtNameAndSurname.text,
+                              firstSelect: int.parse(txtFirstSelect.text),
+                              secondSelect: int.parse(txtSecondSelect.text),
+                              choice: "",
+                              parentNameAndSurname: txtParentNameAndSurname.text,
+                              className: txtClass.text,
+                              address: txtAddress.text,
+                              phone: txtPhone.text,
+                              email: txtEmail.text,
+                              score: double.parse(txtScore.text));
+
+                          if(txtFirstSelect.text==txtSecondSelect.text){
+                            showToAlert(context, "Tercihleriniz aynı olamaz");
+                          }else{
+                            StudentController().postStudent(student);
+                           // print(student.score);
+                            Navigator.pop(context);
+                          }
+                        }
+
+
                         },
                       child: Text("Kaydet")),
                 ],

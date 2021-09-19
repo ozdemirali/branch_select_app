@@ -1,5 +1,6 @@
 import 'package:branch_select_app/dialog/showToStudentChoice.dart';
 import 'package:branch_select_app/models/branchStatus.dart';
+import 'package:branch_select_app/models/student.dart';
 import 'package:branch_select_app/models/studentChoice.dart';
 import 'package:branch_select_app/models/studentChoiceStatus.dart';
 import 'package:branch_select_app/services/studentController.dart';
@@ -18,7 +19,7 @@ class ChoicesMade extends StatefulWidget{
 
 class ChoicesMadeState extends State<ChoicesMade> {
 
-  late Future<List<StudentChoice>> studentChoice;
+  late Future<List<Student>> students;
   late Future<StudentChoiceStatus> studentChoiceStatus;
 
   late Map<String,double> dataMap;
@@ -38,7 +39,7 @@ class ChoicesMadeState extends State<ChoicesMade> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    studentChoice=StudentController().getStudentAll();
+    students=StudentController().getStudentAll();
     studentChoiceStatus=StudentController().getBranchStatus();
   }
 
@@ -67,8 +68,8 @@ class ChoicesMadeState extends State<ChoicesMade> {
                 return Text("Grafik Bilgileri Yükleniyor");
           }),
           Expanded(
-            child:FutureBuilder<List<StudentChoice>>(
-              future:studentChoice,
+            child:FutureBuilder<List<Student>>(
+              future:students,
               builder:(context,snapshot){
                 if(snapshot.hasData){
                   return
@@ -94,7 +95,7 @@ class ChoicesMadeState extends State<ChoicesMade> {
                             child: ListTile(
                               leading: CircleAvatar(
                                 radius: 30,
-                                backgroundColor: snapshot.data![position].choice==""?Colors.red:Colors.green,
+                                backgroundColor: snapshot.data![position].choice==null?Colors.red:Colors.green,
                                 child: Text(snapshot.data![position].score.toString(),style:TextStyle(fontWeight: FontWeight.normal,color:Colors.white)),
                               ),
                               title: Text(snapshot.data![position].nameAndSurname),
@@ -104,7 +105,8 @@ class ChoicesMadeState extends State<ChoicesMade> {
                                         Text("Henüz Seçim Yapmamış")  ,
                               onTap: (){
                                 print("Seçildi");
-                                showToStudentChoice(context);
+                                print(snapshot.data![position]);
+                                showToStudentChoice(context,snapshot.data![position]);
                                 // showToNotification(context,_appointedWorkplaceList[position]);
                               },
                             ),

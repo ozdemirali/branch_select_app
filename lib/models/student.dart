@@ -10,7 +10,6 @@ class Student{
   final String phone;
   final String email;
   final double score;
-  final bool isDeleted;
 
   Student({
     required this.id,
@@ -24,7 +23,6 @@ class Student{
     required this.phone,
     required this.email,
     required this.score,
-    required this.isDeleted,
 });
 
   factory Student.fromJson(Map<String,dynamic>json){
@@ -40,7 +38,7 @@ class Student{
         phone: json["Phone"],
         email: json["Email"],
         score: json["Score"],
-        isDeleted: json["IsDeleted"]);
+       );
   }
 
 
@@ -56,6 +54,7 @@ class Student{
       "Address":address,
       "Phone":phone,
       "Email":email,
+      "Score":score
     };
   }
 }

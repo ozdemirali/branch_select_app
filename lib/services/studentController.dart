@@ -53,9 +53,9 @@ class StudentController{
       }
   }
 
-  Future<List<StudentChoice>> getStudentAll() async{
+  Future<List<Student>> getStudentAll() async{
     try{
-      var data=<StudentChoice>[];
+      var data=<Student>[];
       var url=Uri.parse(UrlAddress().getStudentAll);
       final ioc = new HttpClient();
       ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
@@ -68,14 +68,13 @@ class StudentController{
       if(response.statusCode==200){
         var value=jsonDecode(response.body);
         value.forEach((v){
-          data.add(StudentChoice.fromJson(v));
+          data.add(Student.fromJson(v));
         });
         return data;
       }
       else{
         throw Exception('Bilgileri yüklerken problem Oluştu');
       }
-
 
     }catch(error){
       throw Exception(error);
@@ -97,8 +96,8 @@ class StudentController{
               HttpHeaders.contentTypeHeader:"application/json"
            },body:jsonEncode(student.toJson()) );
 
-            print(response.statusCode);
-            print(response.body);
+            //print(response.statusCode);
+            //print(response.body);
 
           }catch(error){
 

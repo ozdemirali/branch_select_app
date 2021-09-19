@@ -169,8 +169,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
                 address: txtAddress.text,
                 phone: txtPhone.text,
                 email: txtEmail.text,
-                score: score,
-                isDeleted: false);
+                score: score);
 
             if(txtFirstSelect.text==txtSecondSelect.text){
               showToAlert(context, "Tercihleriniz aynı olamaz");
