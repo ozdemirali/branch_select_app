@@ -33,4 +33,21 @@ class BranchController{
       throw Exception(error);
     }
   }
+
+  Future createClasses() async{
+    try{
+      var url = Uri.parse(UrlAddress().createClasses);
+      final ioc = new HttpClient();
+      ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      final http = new IOClient(ioc);
+
+      final response= await http.get(url,headers: {
+        HttpHeaders.authorizationHeader:"Bearer "+Token.accessToken
+      });
+
+      print(response.statusCode);
+    }catch(error){
+      throw Exception(error);
+    }
+  }
 }

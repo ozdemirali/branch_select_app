@@ -1,5 +1,6 @@
-
+import 'package:branch_select_app/models/studentChoice.dart';
 import 'package:branch_select_app/models/studentChoiceStatus.dart';
+import 'package:branch_select_app/services/branchController.dart';
 import 'package:branch_select_app/services/studentController.dart';
 import 'package:branch_select_app/widgets/chart.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,7 @@ class BranchStatusState extends State<BranchStatus> {
   late Future<StudentChoiceStatus> studentChoiceStatus;
   late Map<String,double> dataMap;
   late bool status;
-  // Map<String, double> dataMap = {
-  //   "Yazılım": 15,
-  //   "Ağ": 3,
-  // };
+
   List<Color> colorList = [
     Colors.blue,
     Colors.yellow,
@@ -60,7 +58,7 @@ class BranchStatusState extends State<BranchStatus> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.bottom,false,true,false,false),
+                              chart(dataMap,context,colorList,ChartType.disc,"",LegendPosition.right,false,true,false,false),
                               Padding(
                                 padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
                                 child: ElevatedButton(
@@ -69,6 +67,7 @@ class BranchStatusState extends State<BranchStatus> {
                                   onPressed:status==false?null:
                                       (){
                                     print("Kaydet");
+                                    BranchController().createClasses();
                                     },
                                 ),
                               ),

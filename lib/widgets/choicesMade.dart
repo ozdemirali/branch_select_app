@@ -81,6 +81,8 @@ class ChoicesMadeState extends State<ChoicesMade> {
                           key: Key(snapshot.data![position].toString()),
                           onDismissed:(direction) async{
                             print("silindi");
+                            print(snapshot.data![position].id);
+                            StudentController().deleteStudent(snapshot.data![position].id);
                           },
                           secondaryBackground:Container(
                             child: Center(
