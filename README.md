@@ -2,15 +2,19 @@
 
 A new Flutter application.
 
+## Dependencies
+
+  - dropdown_formfield: ^0.1.3
+  - email_validator: "0.1.4"
+  - file_picker: ^4.0.1
+  - pie_chart: ^5.0.0
+  - http: ^0.13.3
+
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is done for vocational high School to branch selection
+Screens are aboeve
 
 A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+##Login Screen
