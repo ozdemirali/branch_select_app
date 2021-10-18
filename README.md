@@ -25,7 +25,11 @@ This project is done for vocational high School to branch selection. Screens are
 ## Admin Screen
 ### Admin Home Screen
 ![Admin Home Screen](https://user-images.githubusercontent.com/20681737/137600564-7dda95b5-83e3-45e0-bc3d-2826a68101fb.png)
-### Admin Student List Screen
+### Show Student Data Screen
+![Show Student Information](https://user-images.githubusercontent.com/20681737/137784987-7933bd0a-b346-487f-9d08-e5a634ed24a2.png)
+### Delete Student Data Screen
+![Delete Student](https://user-images.githubusercontent.com/20681737/137784985-2bac224d-b8ce-4651-b402-62389391cc1b.png)
+###  Moment Banch Status
 ![Admin Student List Screen](https://user-images.githubusercontent.com/20681737/137600565-d289ea7a-c45b-4dab-8cee-e60b94fa115a.png)
 ### Admin Setup Screen
 ![Admin Setup Screen](https://user-images.githubusercontent.com/20681737/137600566-37f40cf3-24a5-4b8d-91d0-a1be1e9cc076.png)
